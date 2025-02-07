@@ -1,3 +1,4 @@
+from datetime import date
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
@@ -5,24 +6,56 @@ from django.urls import reverse
 
 
 data = {
-    "proglamlama" : "proglamlama kategorisine ait kurslar",
+    "programlama" : "proglamlama kategorisine ait kurslar",
     "web-gelistirme" : "web gelistirme kategorisine ait kurslar",
-    "mobil" : "mobil kategorisine ait kurslar",
+    "mobil-uygulamalar" : "mobil kategorisine ait kurslar",
 }
 
+db = {
+    "courses":[
+        {
+            "title":"javascript kursu",
+            "description":"javascript kursu açıklama",
+            "imageUrl":"https://img-c.udemycdn.com/course/100x100/1258436_2dc3_4.jpg",
+            "slug":"javascript-",
+            "date": date(2024,6,19),
+            "isActive": True,
+            "isUpdated": False
+        },
+        {
+            "title":"pyhton kursu",
+            "description":"pyhton kursu açıklama",
+            "imageUrl":"https://img-c.udemycdn.com/course/100x100/2463492_8344_3.jpg",
+            "slug":"pyhton-",
+            "date": date(2024,5,19),
+            "isActive": False,
+            "isUpdated": True
+        },
+        {
+            "title":"web-gelistirme kursu",
+            "description":"web-gelistirme kursu açıklama",
+            "imageUrl":"https://img-c.udemycdn.com/course/100x100/1662526_fc1c_3.jpg",
+            "slug":"web-gelistirme-",
+            "date": date(2024,4,19),
+            "isActive": True,
+            "isUpdated": True
+        }
+    ],
+    "categories":[
+        {"id":1, "name":"programlama", "slug":"programlama"},
+        {"id":2, "name":"web gelistirme", "slug":"web-gelistirme"},
+        {"id":3, "name":"mobil uygulamalar", "slug":"mobil-uygulamalar"}
+        ]
+}
+
+
 def index(req):
-    return render(req, "courses/index.html")
-
-def kurslar(req):
-    list_items = ""
-    category_list = list(data.keys())
-
-    for cat in category_list:
-        redirect_url = reverse("courses_by_category", args=[cat])
-        list_items += f"<li><a href='{redirect_url}'> {cat}</a></li>"
-    
-    html = f"<h1>kurs listesi</h1></br><ul>{list_items}</ul>"
-    return HttpResponse(html)
+    kurslar = [course for course in db["courses"] if course["isActive"] == True]
+    kategoriler = db["categories"]
+    return render(req, "courses/index.html", {
+        'categories': kategoriler,
+        'courses': kurslar
+    })
 
 def details(req, kurs_adi):
     return HttpResponse(f"{kurs_adi} detay sayfası")
@@ -30,7 +63,10 @@ def details(req, kurs_adi):
 def getCoursesByCategory(req, category_name):
     try:
         category_text = data[category_name]
-        return HttpResponse(category_text)
+        return render(req, "courses/courses.html", {
+            'category':category_name,
+            'category_text': category_text
+        })
     except:
         return HttpResponseNotFound("sayfa bulunamadı")
 

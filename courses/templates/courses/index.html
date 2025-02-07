@@ -1,5 +1,25 @@
 {% extends "layout.html" %}
 
+{% block page-title %} 
+    Kurslar
+{% endblock %}
+
 {% block content %}
-    <h1>Kurslar anasayfa</h1>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-3">
+           {% include "courses/partials/_categories.html" %}
+        </div>
+
+        </div>
+        <div class="col-9">
+            {% for course in courses %}
+                {% comment %} {% if course.isActive %}
+                    
+                {% endif %}  {% endcomment %}
+                {% include "courses/partials/_course.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock content %}
