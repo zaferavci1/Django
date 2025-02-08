@@ -16,7 +16,7 @@ db = {
         {
             "title":"javascript kursu",
             "description":"javascript kursu açıklama",
-            "imageUrl":"https://img-c.udemycdn.com/course/100x100/1258436_2dc3_4.jpg",
+            "imageUrl":"1.jpg",
             "slug":"javascript-",
             "date": date(2024,6,19),
             "isActive": True,
@@ -25,7 +25,7 @@ db = {
         {
             "title":"pyhton kursu",
             "description":"pyhton kursu açıklama",
-            "imageUrl":"https://img-c.udemycdn.com/course/100x100/2463492_8344_3.jpg",
+            "imageUrl":"2.jpg",
             "slug":"pyhton-",
             "date": date(2024,5,19),
             "isActive": False,
@@ -34,7 +34,7 @@ db = {
         {
             "title":"web-gelistirme kursu",
             "description":"web-gelistirme kursu açıklama",
-            "imageUrl":"https://img-c.udemycdn.com/course/100x100/1662526_fc1c_3.jpg",
+            "imageUrl":"3.jpg",
             "slug":"web-gelistirme-",
             "date": date(2024,4,19),
             "isActive": True,
