@@ -79,8 +79,16 @@ WSGI_APPLICATION = 'course.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mssql',
+        'NAME': 'django',  # Azure Data Studio'daki veritabanınızın adı
+        'USER': 'SA',       # SQL Server kullanıcı adınız
+        'PASSWORD': 'reallyStrongPwd123',       # SQL Server şifreniz
+        'HOST': 'localhost',       # Veya uzak sunucu için IP adresi
+        'PORT': '1433',            # MSSQL varsayılan portu
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',  # ODBC sürücüsü
+            'trust_server_certificate': 'yes',  # SSL hatasını önler
+        },
     }
 }
 
