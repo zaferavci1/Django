@@ -1,65 +1,27 @@
 from datetime import date
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
-from .models import course
-
-
-
-data = {
-    "programlama" : "proglamlama kategorisine ait kurslar",
-    "web-gelistirme" : "web gelistirme kategorisine ait kurslar",
-    "mobil-uygulamalar" : "mobil kategorisine ait kurslar",
-}
-
-db = {
-    "courses":[
-        {
-            "title":"javascript kursu",
-            "description":"javascript kursu açıklama",
-            "imageUrl":"1.jpg",
-            "slug":"javascript-",
-            "date": date(2024,6,19),
-            "isActive": True,
-            "isUpdated": False
-        },
-        {
-            "title":"pyhton kursu",
-            "description":"pyhton kursu açıklama",
-            "imageUrl":"2.jpg",
-            "slug":"pyhton-",
-            "date": date(2024,5,19),
-            "isActive": False,
-            "isUpdated": True
-        },
-        {
-            "title":"web-gelistirme kursu",
-            "description":"web-gelistirme kursu açıklama",
-            "imageUrl":"3.jpg",
-            "slug":"web-gelistirme-",
-            "date": date(2024,4,19),
-            "isActive": True,
-            "isUpdated": True
-        }
-    ],
-    "categories":[
-        {"id":1, "name":"programlama", "slug":"programlama"},
-        {"id":2, "name":"web gelistirme", "slug":"web-gelistirme"},
-        {"id":3, "name":"mobil uygulamalar", "slug":"mobil-uygulamalar"}
-        ]
-}
+from .models import course, category
 
 
 def index(req):
     kurslar = course.objects.filter(isActive=1)
-    kategoriler = db["categories"]
+    kategoriler = category.objects.all()
     return render(req, "courses/index.html", {
         'categories': kategoriler,
         'courses': kurslar
     })
 
-def details(req, kurs_adi):
-    return HttpResponse(f"{kurs_adi} detay sayfası")
+def details(req, slug):
+    try:
+        courses = course.objects.get(slug = slug)
+    except:
+        raise Http404()
+    context = {
+        "course": courses
+    }
+    return render(req, "courses/details.html", context)
 
 def getCoursesByCategory(req, category_name):
     try:
